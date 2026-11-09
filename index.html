@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calvin Garcia — Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-sky-500/20 selection:text-sky-300 min-h-screen flex flex-col justify-between">
+
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-lg text-xs font-mono shadow-xl flex items-center space-x-2 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2">
+        <span>Email copied to clipboard!</span>
+    </div>
+
+    <div class="max-w-2xl mx-auto px-6 py-16 sm:py-24 space-y-10 flex-grow">
+        <header class="space-y-6">
+            <div class="flex items-center justify-between">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/60 text-sky-400 text-xs font-mono">
+                    <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+                    <span>Looking for internship</span>
+                </div>
+
+                <!--socials-->
+                <div class="flex items-center space-x-3 text-slate-400">
+                    <a href="https://github.com/sidyecoder" class="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition-colors shadow-sm">
+                        GitHub
+                    </a>
+                    <a href="https://linkedin.com/in/calvin-josh-garcia-12a61743a" class="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition-colors shadow-sm">
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+                    Calvin Garcia
+                </h1>
+                <p class="text-slate-400 text-base font-medium">
+                    Undergraduate Computer Science student at Far Eastern University
+                </p>
+            </div>
+        </header>
+
+        <!--about-->
+        <section class="space-y-3">
+            <h2 class="text-xs font-mono uppercase tracking-widest text-slate-500">About</h2>
+            <p class="text-slate-300 text-sm leading-relaxed sm:text-base">
+                A fourth-year Computer Science student at Far Eastern University, specializing in software development.
+                Interested in software development and web development. I am eager to learn new skills to enhance my abilities and contribute to projects. 
+            </p>
+            <p class="text-slate-300 text-sm leading-relaxed sm:text-base">
+                I am currently seeking internship opportunities to gain practical experience and apply my knowledge in real-world scenarios. 
+                I am enthusiastic about collaborating with teams and contributing to innovative projects.
+            </p>
+        </section>
+
+        <!-- github tracker -->
+        <section class="space-y-3">
+            <h2 class="text-xs font-mono uppercase tracking-widest text-slate-500">Activity</h2>
+            <div class="p-5 rounded-xl bg-slate-800/20 flex justify-center items-center">
+                <img 
+                    src="https://ghchart.rshah.org/2ea043/sidyecoder" 
+                    alt="Calvin's GitHub Contribution Heatmap"
+                    class="w-full max-w-full h-auto min-w-[600px] opacity-90 hover:opacity-100 transition-opacity"
+                    loading="lazy"
+                />
+            </div>
+        </section>
+
+        <!--projects-->
+        <section class="space-y-3">
+            <h2 class="text-xs font-mono uppercase tracking-widest text-slate-500">Projects</h2>
+
+            <div class="space-y-10">
+                <!--project-->
+                <a href="https://github.com/yawnydoki/artifact-nmfa" target="_blank" class="group block p-5 rounded-xl bg-slate-800/40 border border-slate-800 hover:border-slate-700 hover:bg-slate-800/80 transition-all">
+                    <div class="flex items-start justify-between">
+                        <h3 class="text-sm font-semibold text-white group-hover:text-sky-300 transition-colors flex items-center space-x-1.5">
+                            <span>ArtiFact AR Museum Guide</span>
+                        </h3>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-1.5 mb-3 leading-relaxed">
+                        Web-based augmented reality companion for interactive 3D museum exhibits and annotations.
+                    </p>
+                    <div class="flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+                        <span class="px-2 py-0.5 rounded bg-slate-900/60 border border-slate-700/50">JavaScript</span>
+                        <span class="px-2 py-0.5 rounded bg-slate-900/60 border border-slate-700/50">Three.js</span>
+                        <span class="px-2 py-0.5 rounded bg-slate-900/60 border border-slate-700/50">WebAR</span>
+                    </div>
+                </a>
+
+        <!--contact section-->
+        <section class="space-y-4 pt-4 border-t border-slate-800">
+            <h2 class="text-xs font-mono uppercase tracking-widest text-slate-500">Contact</h2>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-xl bg-slate-800/30 border border-slate-800">
+                <div>
+                    <h3 class="text-sm font-semibold text-white">Send an email!</h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Feel free to reach out or ask questions. :]]</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <a href="mailto:calvin.garcia2005@gmail.com" class="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition-colors shadow-sm">
+                        Send Email
+                    </a>
+                    <button onclick="copyEmail('calvin.garcia2005@gmail.com')" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono border border-slate-700 transition-colors flex items-center space-x-1.5" title="Copy email address">
+                        <span>Copy</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="border-t border-slate-800/60 py-8">
+        <div class="max-w-2xl mx-auto px-6 flex items-center justify-between text-xs text-slate-500">
+            <p>© 2026 Calvin Garcia</p>
+        </div>
+    </footer>
+
+    <script>
+        function copyEmail(email) {
+            navigator.clipboard.writeText(email).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+                toast.classList.add('opacity-100', 'translate-y-0');
+                
+                setTimeout(() => {
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                    toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+                }, 2500);
+            }).catch(err => {
+                console.error('Failed to copy email: ', err);
+            });
+        }
+    </script>
+
+</body>
+</html>
