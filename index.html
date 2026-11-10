@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calvin Garcia — Portfolio</title>
+    <!-- styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -14,138 +16,555 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        folder: {
+                            yellow: '#FFC700',
+                            green: '#2ECC71',
+                            blue: '#0088FF',
+                            red: '#FF3B30',
+                        }
                     }
                 }
             }
         }
     </script>
-</head>
-<body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-sky-500/20 selection:text-sky-300 min-h-screen flex flex-col justify-between">
 
-    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-lg text-xs font-mono shadow-xl flex items-center space-x-2 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2">
+    <style>
+        body {
+            background-color: #f2f2ee;
+            color: #111827;
+        }
+
+        /* container */
+        .cabinet-viewport {
+            perspective: 1200px;
+            position: relative;
+        }
+
+        /* folders */
+        .folder-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform-origin: bottom center;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease, filter 0.3s ease;
+            will-change: transform, z-index;
+        }
+
+        /* inactive */
+        .folder-card.in-background {
+            pointer-events: none;
+            filter: brightness(0.92) contrast(0.96);
+        }
+
+        /* active */
+        .folder-card.in-front {
+            pointer-events: auto;
+            filter: brightness(1);
+            transform: translateY(0px) scale(1) translateZ(0px);
+            z-index: 50 !important;
+        }
+
+        /* tabs */
+        .tab-cutout {
+            clip-path: polygon(0% 0%, 82% 0%, 96% 100%, 0% 100%);
+            border-top-left-radius: 1.25rem;
+            border-top-right-radius: 0.5rem;
+            transition: transform 0.25s ease, filter 0.2s ease;
+        }
+
+        .tab-cutout:hover {
+            filter: brightness(1.06);
+        }
+
+        /* scrollbars */
+        .folder-content-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .folder-content-scroll::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+        }
+        .folder-content-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        /* grid */
+        .bg-grid-pattern {
+            background-size: 24px 24px;
+            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        }
+
+        /* scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-slate-800 selection:text-white bg-grid-pattern">
+
+    <!-- toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white border border-slate-700 px-4 py-3 rounded-xl text-xs font-mono shadow-2xl flex items-center space-x-2 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-3">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
         <span>Email copied to clipboard!</span>
     </div>
 
-    <div class="max-w-2xl mx-auto px-6 py-16 sm:py-24 space-y-10 flex-grow">
-        <header class="space-y-6">
-            <div class="flex items-center justify-between">
-                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/60 text-sky-400 text-xs font-mono">
-                    <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-                    <span>Looking for internship</span>
-                </div>
+    <!-- wrapper -->
+    <div class="max-w-7xl mx-auto w-full px-6 py-8 sm:py-10 flex flex-col min-h-screen">
 
-                <!--socials-->
-                <div class="flex items-center space-x-3 text-slate-400">
-                    <a href="https://github.com/sidyecoder" class="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition-colors shadow-sm">
-                        GitHub
-                    </a>
-                    <a href="https://linkedin.com/in/calvin-josh-garcia-12a61743a" class="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition-colors shadow-sm">
-                        LinkedIn
-                    </a>
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+        <!-- navigation -->
+        <header class="w-full mb-8">
+            <div class="flex items-center justify-between pb-4">
+                <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 cursor-pointer" onclick="switchFolder('about')">
                     Calvin Garcia
                 </h1>
-                <p class="text-slate-400 text-base font-medium">
-                    Undergraduate Computer Science student at Far Eastern University
-                </p>
+                
+                <nav class="flex items-center space-x-6 sm:space-x-8 text-sm font-semibold text-slate-700">
+                    <button onclick="switchFolder('about')" class="hover:text-black transition-colors">About</button>
+                    <button onclick="switchFolder('activity')" class="hover:text-black transition-colors hidden sm:inline-block">Activity</button>
+                    <button onclick="switchFolder('skills')" class="hover:text-black transition-colors hidden sm:inline-block">Skills</button>
+                    <button onclick="switchFolder('projects')" class="hover:text-black transition-colors">Projects</button>
+                </nav>
             </div>
+            <!-- divider -->
+            <div class="w-full h-[1px] bg-slate-300/80"></div>
         </header>
 
-        <!--about-->
-        <section class="space-y-3">
-            <h2 class="text-xs font-mono uppercase tracking-widest text-slate-500">About</h2>
-            <p class="text-slate-300 text-sm leading-relaxed sm:text-base">
-                A fourth-year Computer Science student at Far Eastern University, specializing in software development.
-                Interested in software development and web development. I am eager to learn new skills to enhance my abilities and contribute to projects. 
-            </p>
-            <p class="text-slate-300 text-sm leading-relaxed sm:text-base">
-                I am currently seeking internship opportunities to gain practical experience and apply my knowledge in real-world scenarios. 
-                I am enthusiastic about collaborating with teams and contributing to innovative projects.
-            </p>
-        </section>
-
-        <!-- github tracker -->
-        <section class="space-y-3">
-            <h2 class="text-xs font-mono uppercase tracking-widest text-slate-500">Activity</h2>
-            <div class="p-5 rounded-xl bg-slate-800/20 flex justify-center items-center">
-                <img 
-                    src="https://ghchart.rshah.org/2ea043/sidyecoder" 
-                    alt="Calvin's GitHub Contribution Heatmap"
-                    class="w-full max-w-full h-auto min-w-[600px] opacity-90 hover:opacity-100 transition-opacity"
-                    loading="lazy"
-                />
-            </div>
-        </section>
-
-        <!--projects-->
-        <section class="space-y-3">
-            <h2 class="text-xs font-mono uppercase tracking-widest text-slate-500">Projects</h2>
-
-            <div class="space-y-10">
-                <!--project-->
-                <a href="https://github.com/yawnydoki/artifact-nmfa" target="_blank" class="group block p-5 rounded-xl bg-slate-800/40 border border-slate-800 hover:border-slate-700 hover:bg-slate-800/80 transition-all">
-                    <div class="flex items-start justify-between">
-                        <h3 class="text-sm font-semibold text-white group-hover:text-sky-300 transition-colors flex items-center space-x-1.5">
-                            <span>ArtiFact AR Museum Guide</span>
-                        </h3>
+        <!-- layout -->
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start flex-grow pb-12">
+            
+            <!-- profile -->
+            <section class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-start gap-6 pt-2">
+                <!-- avatar -->
+                <div class="w-40 h-40 sm:w-48 sm:h-48 lg:w-full lg:h-64 bg-slate-300/80 rounded-2xl flex-shrink-0 flex items-center justify-center border border-slate-400/40 shadow-inner group relative overflow-hidden">
+                    <svg class="w-20 h-20 text-slate-500/60" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <div class="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="text-xs font-mono font-medium text-slate-800 bg-white/90 px-3 py-1 rounded-full shadow-sm">FEU Student</span>
                     </div>
-                    <p class="text-xs text-slate-400 mt-1.5 mb-3 leading-relaxed">
-                        Web-based augmented reality companion for interactive 3D museum exhibits and annotations.
+                </div>
+
+                <!-- biography -->
+                <div class="space-y-3">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+                        Calvin Garcia
+                    </h2>
+                    <p class="text-slate-600 font-medium text-sm sm:text-base leading-snug">
+                        Undergraduate Computer Science Student at Far Eastern University Specializing in Software Development
                     </p>
-                    <div class="flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
-                        <span class="px-2 py-0.5 rounded bg-slate-900/60 border border-slate-700/50">JavaScript</span>
-                        <span class="px-2 py-0.5 rounded bg-slate-900/60 border border-slate-700/50">Three.js</span>
-                        <span class="px-2 py-0.5 rounded bg-slate-900/60 border border-slate-700/50">WebAR</span>
+                    
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-mono font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Looking for Internship</span>
                     </div>
-                </a>
 
-        <!--contact section-->
-        <section class="space-y-4 pt-4 border-t border-slate-800">
-            <h2 class="text-xs font-mono uppercase tracking-widest text-slate-500">Contact</h2>
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-xl bg-slate-800/30 border border-slate-800">
-                <div>
-                    <h3 class="text-sm font-semibold text-white">Send an email!</h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Feel free to reach out or ask questions. :]]</p>
+                    <!-- links -->
+                    <div class="pt-2 flex flex-wrap gap-2">
+                        <a href="https://github.com/sidyecoder" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs flex items-center space-x-1.5 transition-colors shadow-sm">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://linkedin.com/in/calvin-josh-garcia-12a61743a" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs flex items-center space-x-1.5 transition-colors shadow-sm">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.7a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26z"/></svg>
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+                    
+                    <!-- email -->
+                    <div class="space-y-3 pt-10">
+                        <h4 class="text-sm font-bold uppercase tracking-wider font-mono">Send an Email!</h4>
+                        <p class="text-xs">Feel free to reach out or ask questions. :]]</p>
+                        <div class="flex flex-wrap items-center gap-3 pt-1">
+                            <a href="mailto:calvin.garcia2005@gmail.com" class="px-4 py-2 rounded-xl bg-white text-slate-900 font-bold text-xs hover:bg-red-50 transition-colors shadow-sm">
+                                Send Email
+                            </a>
+                           <button onclick="copyEmail('calvin.garcia2005@gmail.com')" class="px-4 py-2 rounded-xl bg-black/30 hover:bg-black/40 text-white font-mono text-xs border border-white/20 transition-colors flex items-center space-x-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                <span>Copy Email</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <a href="mailto:calvin.garcia2005@gmail.com" class="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition-colors shadow-sm">
-                        Send Email
-                    </a>
-                    <button onclick="copyEmail('calvin.garcia2005@gmail.com')" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono border border-slate-700 transition-colors flex items-center space-x-1.5" title="Copy email address">
-                        <span>Copy</span>
-                    </button>
+            </section>
+
+            <!-- cabinet -->
+            <section class="lg:col-span-8 flex flex-col w-full relative min-h-[580px] cabinet-viewport" id="cabinet-section">
+
+                <!-- about -->
+                <div id="folder-card-about" class="folder-card in-front flex flex-col">
+                    <div class="flex items-end justify-start -space-x-8 -mb-[2px] z-20 pt-2 pl-0">
+                        <button onclick="switchFolder('about')" class="tab-cutout bg-folder-yellow w-36 sm:w-44 h-12 sm:h-14 flex items-center justify-center shadow-md flex-shrink-0 cursor-pointer relative">
+                            <span class="text-base sm:text-xl font-black tracking-tight text-slate-900 pr-4">About</span>
+                        </button>
+                    </div>
+                    <div class="bg-folder-yellow rounded-b-3xl rounded-tr-3xl p-6 sm:p-8 shadow-2xl border-t border-black/10 min-h-[500px] flex flex-col justify-between flex-grow">
+                        <div class="space-y-4 folder-content-scroll overflow-y-auto max-h-[380px] pr-2 text-slate-900">
+                            <h3 class="text-xl sm:text-2xl font-bold border-b border-black/10 pb-2">Background & Goals</h3>
+                            <p class="text-slate-900 text-sm sm:text-base leading-relaxed font-medium">
+                                A fourth-year Computer Science student at Far Eastern University, specializing in software development.
+                            </p>
+                            <p class="text-slate-900 text-sm sm:text-base leading-relaxed font-medium">
+                                Interested in software development and web development. I am eager to learn new skills to enhance my abilities and contribute to projects.
+                            </p>
+                            <p class="text-slate-900 text-sm sm:text-base leading-relaxed font-medium">
+                                I am currently seeking internship opportunities to gain practical experience and apply my knowledge in real-world scenarios. I am enthusiastic about collaborating with teams and contributing to innovative projects.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-black/10 flex items-center justify-between text-xs font-semibold text-slate-800">
+                            <span>Far Eastern University</span>
+                            <span>BS Computer Science</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
+
+                <!-- activity -->
+                <div id="folder-card-activity" class="folder-card in-background flex flex-col">
+                    <div class="flex items-end justify-start -space-x-8 -mb-[2px] z-20 pt-2 pl-24 sm:pl-32">
+                        <button onclick="switchFolder('activity')" class="tab-cutout bg-folder-green w-36 sm:w-44 h-12 sm:h-14 flex items-center justify-center shadow-md flex-shrink-0 cursor-pointer relative">
+                            <span class="text-base sm:text-xl font-black tracking-tight text-slate-900 pr-4">Activity</span>
+                        </button>
+                    </div>
+                    <div class="bg-folder-green rounded-b-3xl rounded-tr-3xl rounded-tl-3xl p-6 sm:p-8 shadow-2xl border-t border-black/10 min-h-[500px] flex flex-col justify-between flex-grow">
+                        <div class="space-y-4 folder-content-scroll overflow-y-auto max-h-[380px] pr-2 text-slate-900">
+                            <div class="flex items-center justify-between border-b border-black/10 pb-2">
+                                <h3 class="text-xl sm:text-2xl font-bold">GitHub Contributions</h3>
+                                <span class="font-mono text-xs bg-black/10 px-2.5 py-1 rounded-full font-bold">@sidyecoder</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-medium text-slate-800">
+                                Live activity tracker fetching recent public repository commits and contributions.
+                            </p>
+
+                            <div class="bg-slate-900/90 p-4 sm:p-5 rounded-2xl border border-black/20 shadow-inner flex flex-col items-center justify-center min-h-[160px] overflow-x-auto" id="github-graph-container">
+                                <span class="text-xs font-mono text-emerald-400 animate-pulse" id="graph-loading">Loading contribution heatmap...</span>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-black/10 flex items-center justify-between text-xs font-semibold text-slate-800">
+                            <span>GitHub API Dynamic Sync</span>
+                            <a href="https://github.com/sidyecoder" target="_blank" class="underline hover:text-black">View GitHub Profile →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- skills -->
+                <div id="folder-card-skills" class="folder-card in-background flex flex-col">
+                    <div class="flex items-end justify-start -space-x-8 -mb-[2px] z-20 pt-2 pl-48 sm:pl-64">
+                        <button onclick="switchFolder('skills')" class="tab-cutout bg-folder-blue w-36 sm:w-44 h-12 sm:h-14 flex items-center justify-center shadow-md flex-shrink-0 cursor-pointer relative">
+                            <span class="text-base sm:text-xl font-black tracking-tight text-white pr-4">Skills</span>
+                        </button>
+                    </div>
+                    <div class="bg-folder-blue rounded-b-3xl rounded-tr-3xl rounded-tl-3xl p-6 sm:p-8 shadow-2xl border-t border-white/20 min-h-[500px] flex flex-col justify-between flex-grow">
+                        <div class="space-y-5 folder-content-scroll overflow-y-auto max-h-[380px] pr-2 text-white">
+                            <h3 class="text-xl sm:text-2xl font-bold border-b border-white/20 pb-2">Technical Proficiency</h3>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/15">
+                                    <h4 class="text-xs font-mono uppercase tracking-widest text-blue-100 font-bold mb-2">Languages</h4>
+                                    <div class="flex flex-wrap gap-1.5 text-xs font-medium">
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">JavaScript (ES6+)</span>
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">C++</span>
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">HTML5 / CSS3</span>
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">Python</span>
+                                    </div>
+                                </div>
+                                <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/15">
+                                    <h4 class="text-xs font-mono uppercase tracking-widest text-blue-100 font-bold mb-2">Web & AR Technologies</h4>
+                                    <div class="flex flex-wrap gap-1.5 text-xs font-medium">
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">Three.js</span>
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">WebAR</span>
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">Tailwind CSS</span>
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">Node.js</span>
+                                    </div>
+                                </div>
+                                <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/15 sm:col-span-2">
+                                    <h4 class="text-xs font-mono uppercase tracking-widest text-blue-100 font-bold mb-2">Tools & Workflows</h4>
+                                    <div class="flex flex-wrap gap-1.5 text-xs font-medium">
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">Git & GitHub</span>
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">VS Code</span>
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">Agile Software Dev</span>
+                                        <span class="bg-white/20 px-2.5 py-1 rounded-md">UI/UX Responsive Layouts</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-white/20 flex items-center justify-between text-xs font-medium text-blue-100">
+                            <span>Continuous Learning</span>
+                            <span>CS Major</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- projects -->
+                <div id="folder-card-projects" class="folder-card in-background flex flex-col">
+                    <div class="flex items-end justify-start -space-x-8 -mb-[2px] z-20 pt-2 pl-72 sm:pl-96">
+                        <button onclick="switchFolder('projects')" class="tab-cutout bg-folder-red w-36 sm:w-44 h-12 sm:h-14 flex items-center justify-center shadow-md flex-shrink-0 cursor-pointer relative">
+                            <span class="text-base sm:text-xl font-black tracking-tight text-white pr-4">Projects</span>
+                        </button>
+                    </div>
+                    <div class="bg-folder-red rounded-b-3xl rounded-tr-3xl rounded-tl-3xl p-6 sm:p-8 shadow-2xl border-t border-white/20 min-h-[500px] flex flex-col justify-between flex-grow">
+                        <div class="space-y-4 folder-content-scroll overflow-y-auto max-h-[380px] pr-2 text-white">
+                            <h3 class="text-xl sm:text-2xl font-bold border-b border-white/20 pb-2">Featured Projects</h3>
+                            
+                            <a href="https://github.com/yawnydoki/artifact-nmfa" target="_blank" rel="noopener noreferrer" class="group block p-5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 transition-all shadow-md">
+                                <div class="flex items-start justify-between">
+                                    <h4 class="text-lg font-bold text-white group-hover:underline flex items-center space-x-2">
+                                        <span>ArtiFact AR Museum Guide</span>
+                                        <svg class="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                    </h4>
+                                </div>
+                                <p class="text-xs sm:text-sm text-red-50 mt-2 mb-4 leading-relaxed font-medium">
+                                    Web-based augmented reality companion for interactive 3D museum exhibits and annotations.
+                                </p>
+                                <div class="flex flex-wrap gap-2 text-[11px] font-mono font-medium">
+                                    <span class="px-2.5 py-0.5 rounded bg-black/20 text-white">JavaScript</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-black/20 text-white">Three.js</span>
+                                    <span class="px-2.5 py-0.5 rounded bg-black/20 text-white">WebAR</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="pt-4 border-t border-white/20 flex items-center justify-between text-xs font-medium text-red-100">
+                            <span>Open for Internship</span>
+                            <span>2026 Portfolio</span>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+        <!-- footer -->
+        <footer class="w-full pt-6 border-t border-slate-300/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+            <p>© 2026 Calvin Garcia. All rights reserved.</p>
+            <p class="font-mono text-[11px]">Use ↑ / ↓ arrow keys or scroll to switch folders</p>
+        </footer>
 
     </div>
 
-    <footer class="border-t border-slate-800/60 py-8">
-        <div class="max-w-2xl mx-auto px-6 flex items-center justify-between text-xs text-slate-500">
-            <p>© 2026 Calvin Garcia</p>
-        </div>
-    </footer>
-
+    <!-- scripts -->
     <script>
-        function copyEmail(email) {
-            navigator.clipboard.writeText(email).then(() => {
-                const toast = document.getElementById('toast');
-                toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
-                toast.classList.add('opacity-100', 'translate-y-0');
-                
-                setTimeout(() => {
-                    toast.classList.remove('opacity-100', 'translate-y-0');
-                    toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
-                }, 2500);
-            }).catch(err => {
-                console.error('Failed to copy email: ', err);
+        const folderOrder = ['about', 'activity', 'skills', 'projects'];
+        let currentFolderIndex = 0;
+        let isTransitioning = false;
+
+        function switchFolder(targetId) {
+            if (targetId === 'contact') targetId = 'projects';
+
+            const activeIndex = folderOrder.indexOf(targetId);
+            if (activeIndex !== -1) {
+                currentFolderIndex = activeIndex;
+            }
+
+            folderOrder.forEach((key, index) => {
+                const card = document.getElementById(`folder-card-${key}`);
+
+                if (key === targetId) {
+                    card.classList.remove('in-background');
+                    card.classList.add('in-front');
+                    card.style.transform = 'translateY(0px) scale(1)';
+                    card.style.zIndex = '50';
+                } else {
+                    card.classList.remove('in-front');
+                    card.classList.add('in-background');
+
+                    const offset = index - activeIndex;
+                    const depthY = offset > 0 ? (offset * 14) + 12 : (Math.abs(offset) * 10) + 18;
+                    const scale = 1 - (Math.abs(offset) * 0.02);
+
+                    card.style.transform = `translateY(${depthY}px) scale(${scale})`;
+                    card.style.zIndex = `${30 - Math.abs(offset) * 5}`;
+                }
             });
         }
-    </script>
 
+        function nextFolder() {
+            if (currentFolderIndex < folderOrder.length - 1) {
+                switchFolder(folderOrder[currentFolderIndex + 1]);
+            }
+        }
+
+        function prevFolder() {
+            if (currentFolderIndex > 0) {
+                switchFolder(folderOrder[currentFolderIndex - 1]);
+            }
+        }
+
+        // scrolling
+        window.addEventListener('wheel', (e) => {
+            const activeCard = document.getElementById(`folder-card-${folderOrder[currentFolderIndex]}`);
+            const scrollArea = activeCard.querySelector('.folder-content-scroll');
+
+            if (scrollArea) {
+                const isAtTop = scrollArea.scrollTop <= 0;
+                const isAtBottom = Math.abs(scrollArea.scrollHeight - scrollArea.clientHeight - scrollArea.scrollTop) <= 2;
+
+                if (e.deltaY > 0 && !isAtBottom) return;
+                if (e.deltaY < 0 && !isAtTop) return;
+            }
+
+            if (isTransitioning) return;
+            if (Math.abs(e.deltaY) > 30) {
+                isTransitioning = true;
+                if (e.deltaY > 0) nextFolder();
+                else prevFolder();
+
+                setTimeout(() => { isTransitioning = false; }, 400);
+            }
+        }, { passive: true });
+
+        // keyboard
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextFolder();
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevFolder();
+            }
+        });
+
+        // swiping
+        let touchStartY = 0;
+        window.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const diffY = touchStartY - touchEndY;
+
+            if (Math.abs(diffY) > 50) {
+                if (diffY > 0) nextFolder();
+                else prevFolder();
+            }
+        }, { passive: true });
+
+        // copying
+        function copyEmail(email) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(email).then(showToast);
+            } else {
+                const textArea = document.createElement("textarea");
+                textArea.value = email;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast();
+                } catch (err) {
+                    console.error('Copy failed', err);
+                }
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+            }, 2600);
+        }
+
+        // activity
+        async function loadGitHubContributions(username) {
+            const container = document.getElementById('github-graph-container');
+            try {
+                const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`);
+                const data = await response.json();
+                
+                if (!data.contributions || data.contributions.length === 0) throw new Error('No data');
+
+                const allDays = data.contributions;
+                
+                // history
+                const weeks = [];
+                let currentWeek = [];
+
+                allDays.forEach((day, index) => {
+                    currentWeek.push(day);
+                    if (currentWeek.length === 7 || index === allDays.length - 1) {
+                        weeks.push(currentWeek);
+                        currentWeek = [];
+                    }
+                });
+                const halfYearWeeks = weeks.slice(-26);
+
+                // statistics
+                let totalContributions = 0;
+                let currentStreak = 0;
+                let longestStreak = 0;
+                let tempStreak = 0;
+
+                allDays.forEach(day => {
+                    totalContributions += day.count;
+                    if (day.count > 0) {
+                        tempStreak++;
+                        if (tempStreak > longestStreak) longestStreak = tempStreak;
+                    } else {
+                        tempStreak = 0;
+                    }
+                });
+
+                // rendering
+                container.innerHTML = '';
+                
+                // heading
+                const statsHeader = document.createElement('div');
+                statsHeader.className = 'w-full flex items-center justify-between text-xs font-mono text-emerald-400 mb-3 px-1';
+                statsHeader.innerHTML = `
+                    <span>${totalContributions} contributions</span>
+                    <span>·</span>
+                    <span>longest streak ${longestStreak} days</span>
+                    <span>·</span>
+                    <span>last 26 weeks</span>
+                `;
+                container.appendChild(statsHeader);
+
+                // graph
+                const grid = document.createElement('div');
+                grid.className = 'flex justify-between w-full max-w-full p-1 gap-1 sm:gap-1.5 overflow-hidden';
+
+                halfYearWeeks.forEach(week => {
+                    const weekCol = document.createElement('div');
+                    weekCol.className = 'flex flex-col gap-1 sm:gap-1.5 flex-1 items-center';
+                    
+                    week.forEach(day => {
+                        const cell = document.createElement('div');
+                        cell.className = 'w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-sm transition-all hover:scale-125 w-full';
+                        cell.title = `${day.date}: ${day.count} contributions`;
+
+                        if (day.count === 0) cell.className += ' bg-slate-800';
+                        else if (day.count <= 2) cell.className += ' bg-emerald-900';
+                        else if (day.count <= 5) cell.className += ' bg-emerald-600';
+                        else if (day.count <= 8) cell.className += ' bg-emerald-400';
+                        else cell.className += ' bg-emerald-300 shadow-[0_0_8px_rgba(52,211,153,0.8)]';
+
+                        weekCol.appendChild(cell);
+                    });
+                    grid.appendChild(weekCol);
+                });
+
+                container.appendChild(grid);
+            } catch (err) {
+                container.innerHTML = `<img src="https://ghchart.rshah.org/2ecc71/${username}" alt="GitHub Heatmap" class="w-full h-auto" />`;
+            }
+        }
+
+        // initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            switchFolder('about');
+            loadGitHubContributions('sidyecoder');
+        });
+    </script>
 </body>
 </html>
